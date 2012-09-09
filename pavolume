@@ -67,24 +67,24 @@ blip_sound = config.get("Sounds", "blip")
 Notify.init("pavolume")
 
 def show():
-	percent = (pa.get_volume() - volume_min) / (volume_max - volume_min) * 100
+	percent = (pa.get_volume(sink) - volume_min) / (volume_max - volume_min) * 100
 
-	if pa.get_mute():
+	if pa.get_mute(sink):
 		title = "Muted %2.0f%%" % percent	
-		pb = progress_bar(volume_min, volume_max, pa.get_volume(), volume_increment, full_char=square_cross)
+		pb = progress_bar(volume_min, volume_max, pa.get_volume(sink), volume_increment, full_char=square_cross)
 	else:
 		title = "Volume %2.0f%%" % percent
-		pb = progress_bar(volume_min, volume_max, pa.get_volume(), volume_increment)
+		pb = progress_bar(volume_min, volume_max, pa.get_volume(sink), volume_increment)
 
 	Notify.Notification.new(title, pb, "dialog-information").show()
 
 def volume_set(new_volume, noshow=False, quiet=False):
-	pa.set_volume(int(new_volume))
+	pa.set_volume(int(new_volume), sink)
 	if not noshow: show()
 	if not quiet: blip()
 
 def volume_mod(increments, noshow=False, nolimit=False, quiet=False):
-	volume = pa.get_volume()
+	volume = pa.get_volume(sink)
 	volume = volume + increments * ((volume_max - volume_min) / volume_increment)
 
 	if volume < volume_min: volume = volume_min
@@ -108,7 +108,7 @@ if __name__ == "__main__":
 		show()
 
 	elif args['volup']:
-		if not args['--nounmute']: pa.set_mute(False)
+		if not args['--nounmute']: pa.set_mute(False, sink)
 		volume_mod(1, args['--noshow'], args['--nolimit'], args['--quiet'])
 		
 	elif args['voldown']:
@@ -122,20 +122,20 @@ if __name__ == "__main__":
 		else:
 			volume = int(volume)
 
-		if not args['--nounmute']: pa.set_mute(False)
+		if not args['--nounmute']: pa.set_mute(False, sink)
 		volume_set(volume, args['--noshow'], args['--quiet'])
 
 	elif args['muteon']:
-		pa.set_mute(True)
+		pa.set_mute(True, sink)
 		if not args['--noshow']: show()
 
 	elif args['muteoff']:
-		pa.set_mute(False)
+		pa.set_mute(False, sink)
 		if not args['--noshow']: show()
 		if not args['--quiet']: blip()
 
 	elif args['mutetoggle']:
-		pa.set_mute(not pa.get_mute())
+		pa.set_mute(not pa.get_mute(sink), sink)
 		if not args['--noshow']: show()
 		if not args['--quiet']: blip()
 
