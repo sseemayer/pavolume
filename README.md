@@ -27,6 +27,20 @@ Clone the git repo somewhere and put <code>pavolume</code> on your <code>$PATH</
 
 Make sure to edit the config file so that it points to a valid blip sound file (it uses the Ubuntu message sound by default). Other than that, pavolume will use the first sink registered in your system.
 
+
+## Using pavolume with awesome
+If you are using awesome, you can use the following key bindings to control pavolume:
+
+	awful.key({                   }, "XF86AudioRaiseVolume", function() awful.util.spawn("pavolume volup") end),
+	awful.key({                   }, "XF86AudioLowerVolume", function() awful.util.spawn("pavolume voldown") end),
+	awful.key({         "Shift"   }, "XF86AudioRaiseVolume", function() awful.util.spawn("pavolume volup --nolimit") end),
+	awful.key({         "Shift"   }, "XF86AudioLowerVolume", function() awful.util.spawn("pavolume voldown") end),
+	awful.key({                   }, "XF86AudioMute", function() awful.util.spawn("pavolume mutetoggle") end),
+
+Pressing the volume up/down keys normally will increase/decrease volume, if you hold shift, you can increase the volume over 100%.
+
+If these bindings don't work for some reason, try calling the commands from the command line directly. If this works, then check whether the pavolume script is also visible from awesome's <code>$PATH</code>.
+
 # Dependencies
 
 * <code>pacmd</code>
