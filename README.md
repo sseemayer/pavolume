@@ -29,7 +29,7 @@ Make sure to edit the config file so that it points to a valid blip sound file (
 
 
 ## Using pavolume with awesome
-If you are using awesome, you can use the following key bindings to control pavolume:
+If you are using [awesome](http://awesome.naquadah.org/), you can use the following key bindings to control pavolume:
 
 	awful.key({                   }, "XF86AudioRaiseVolume", function() awful.util.spawn("pavolume volup") end),
 	awful.key({                   }, "XF86AudioLowerVolume", function() awful.util.spawn("pavolume voldown") end),
