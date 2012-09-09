@@ -1,5 +1,7 @@
 pavolume is a simple python PulseAudio volume control for the command line. It is designed to be bound to your XF86Audio* keys so you can comfortably control PulseAudio volume.
 
+![pavolume notifications](http://i.imgur.com/SnVxL.png)
+
 # Usage
 
 	pavolume show              # show volume and mute status as notification
