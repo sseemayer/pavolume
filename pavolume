@@ -41,11 +41,11 @@ def progress_bar(v_min, v_max, v_current, increment, full_char=square_full, empt
 	empty = increment - filled
 
 	overfilled = 0
-	if empty < 0: 
+	if empty < 0:
 		empty = 0
 		overfilled = filled - increment
 		filled = increment
-	
+
 	if overfilled:
 		return (full_char * filled) + "|" + (full_char * overfilled)
 	else:
@@ -56,7 +56,13 @@ scriptdir = os.path.dirname(os.path.realpath(__file__))
 
 # read config
 config = SafeConfigParser()
-config.read([os.path.join(scriptdir, "pavolume.conf"), os.path.expanduser("$XDG_CONFIG_HOME/pavolume/pavolume.conf"), "/etc/pavolume/pavolume.conf"])
+config.read([
+	os.path.join(scriptdir, "pavolume.conf"),
+	os.path.expanduser("$XDG_CONFIG_HOME/pavolume/pavolume.conf"),
+	os.path.expanduser("$HOME/.config/pavolume/pavolume.conf"),
+	"/etc/pavolume/pavolume.conf"
+])
+
 sink = config.get("Sink", "default_sink")
 if sink == "None": sink = None
 volume_max = int(config.get("Sink", "volume_max"))
@@ -70,7 +76,7 @@ def show():
 	percent = (pa.get_volume(sink) - volume_min) / (volume_max - volume_min) * 100
 
 	if pa.get_mute(sink):
-		title = "Muted %2.0f%%" % percent	
+		title = "Muted %2.0f%%" % percent
 		pb = progress_bar(volume_min, volume_max, pa.get_volume(sink), volume_increment, full_char=square_cross)
 	else:
 		title = "Volume %2.0f%%" % percent
@@ -110,7 +116,7 @@ if __name__ == "__main__":
 	elif args['volup']:
 		if not args['--nounmute']: pa.set_mute(False, sink)
 		volume_mod(1, args['--noshow'], args['--nolimit'], args['--quiet'])
-		
+
 	elif args['voldown']:
 		volume_mod(-1, args['--noshow'], args['--nolimit'], args['--quiet'])
 
