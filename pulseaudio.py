@@ -6,8 +6,8 @@ import collections
 
 class PulseAudio(object):
 
-	volume_re = re.compile(b'^set-sink-volume ([^ ]+) (.*)')
-	mute_re = re.compile(b'^set-sink-mute ([^ ]+) ((?:yes)|(?:no))')
+	volume_re = re.compile('^set-sink-volume ([^ ]+) (.*)')
+	mute_re = re.compile('^set-sink-mute ([^ ]+) ((?:yes)|(?:no))')
 
 	def __init__(self):
 		self._mute = collections.OrderedDict()
@@ -17,6 +17,7 @@ class PulseAudio(object):
 		proc = subprocess.Popen(['pacmd','dump'], stdout=subprocess.PIPE)
 
 		for line in proc.stdout:
+			line = line.decode("utf-8")
 			volume_match = PulseAudio.volume_re.match(line)
 			mute_match = PulseAudio.mute_re.match(line)
 
