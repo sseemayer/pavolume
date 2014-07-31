@@ -24,7 +24,7 @@ class PulseAudio(object):
 			if volume_match:
 				self._volume[volume_match.group(1)] = int(volume_match.group(2),16)
 			elif mute_match:
-				self._mute[mute_match.group(1)] = mute_match.group(2).lower() == b"yes"
+				self._mute[mute_match.group(1)] = mute_match.group(2).lower() == "yes"
 
 
 	def get_mute(self, sink=None):
