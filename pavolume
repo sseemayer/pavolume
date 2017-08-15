@@ -127,13 +127,23 @@ if __name__ == "__main__":
 	elif args['volup']:
 		if not args['--nounmute']: pa.set_mute(False, sink)
 		if args['<volume>']:
-			volume_inc(int(args['<volume>']), args['--noshow'], args['--nolimit'], args['--quiet'])
+			volume = args['<volume>']
+			if '%' in volume:
+				volume = int(volume[:volume.find("%")])
+			else:
+				volume = int(volume)
+			volume_inc(volume, args['--noshow'], args['--nolimit'], args['--quiet'])
 		else:
 			volume_mod(1, args['--noshow'], args['--nolimit'], args['--quiet'])
 
 	elif args['voldown']:
 		if args['<volume>']:
-			volume_inc(-int(args['<volume>']), args['--noshow'], args['--nolimit'], args['--quiet'])
+			volume = args['<volume>']
+			if '%' in volume:
+				volume = int(volume[:volume.find("%")])
+			else:
+				volume = int(volume)
+			volume_inc(-volume, args['--noshow'], args['--nolimit'], args['--quiet'])
 		else:
 			volume_mod(-1, args['--noshow'], args['--nolimit'], args['--quiet'])
 
