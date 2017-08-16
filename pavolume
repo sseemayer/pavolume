@@ -4,7 +4,9 @@
 Usage:
 	pavolume show
 	pavolume volup [--nolimit] [--nounmute] [--noshow] [--quiet]
+	pavolume volup <volume> [--nolimit] [--nounmute] [--noshow] [--quiet]
 	pavolume voldown [--noshow] [--quiet]
+	pavolume voldown <volume> [--noshow] [--quiet]
 	pavolume volset <volume> [--nounmute] [--noshow] [--quiet]
 	pavolume muteon [--noshow] [--quiet]
 	pavolume muteoff [--noshow] [--quiet]
@@ -98,6 +100,15 @@ def volume_mod(increments, noshow=False, nolimit=False, quiet=False):
 
 	volume_set(volume, noshow, quiet)
 
+def volume_inc(increments, noshow=False, nolimit=False, quiet=False):
+	volume = pa.get_volume(sink)
+	volume = (volume + (volume_max - volume_min) * (increments / 100))
+
+	if volume < volume_min: volume = volume_min
+	if increments > 0 and volume > volume_max and not nolimit: volume = volume_max
+
+	volume_set(volume, noshow, quiet)
+
 def blip():
 	subprocess.Popen(["paplay", blip_sound])
 
@@ -115,10 +126,26 @@ if __name__ == "__main__":
 
 	elif args['volup']:
 		if not args['--nounmute']: pa.set_mute(False, sink)
-		volume_mod(1, args['--noshow'], args['--nolimit'], args['--quiet'])
+		if args['<volume>']:
+			volume = args['<volume>']
+			if '%' in volume:
+				volume = int(volume[:volume.find("%")])
+			else:
+				volume = int(volume)
+			volume_inc(volume, args['--noshow'], args['--nolimit'], args['--quiet'])
+		else:
+			volume_mod(1, args['--noshow'], args['--nolimit'], args['--quiet'])
 
 	elif args['voldown']:
-		volume_mod(-1, args['--noshow'], args['--nolimit'], args['--quiet'])
+		if args['<volume>']:
+			volume = args['<volume>']
+			if '%' in volume:
+				volume = int(volume[:volume.find("%")])
+			else:
+				volume = int(volume)
+			volume_inc(-volume, args['--noshow'], args['--nolimit'], args['--quiet'])
+		else:
+			volume_mod(-1, args['--noshow'], args['--nolimit'], args['--quiet'])
 
 	elif args['volset']:
 		volume = args['<volume>']
