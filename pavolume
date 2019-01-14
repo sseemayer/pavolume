@@ -26,7 +26,7 @@ Options:
 
 from pulseaudio import PulseAudio
 from docopt import docopt
-from configparser import SafeConfigParser
+from configparser import ConfigParser
 from gi.repository import Notify
 import os
 import math
@@ -57,7 +57,7 @@ def progress_bar(v_min, v_max, v_current, increment, full_char=square_full, empt
 scriptdir = os.path.dirname(os.path.realpath(__file__))
 
 # read config
-config = SafeConfigParser()
+config = ConfigParser()
 config.read([
 	os.path.join(scriptdir, "pavolume.conf"),
 	os.path.expanduser("$XDG_CONFIG_HOME/pavolume/pavolume.conf"),
