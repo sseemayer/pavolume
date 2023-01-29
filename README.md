@@ -6,7 +6,7 @@ pavolume is a simple python PulseAudio volume control for the command line. It i
 
 	pavolume show              # show volume and mute status as notification
 	pavolume volup             # increase volume
-	pavolume voldown           # increase volume
+	pavolume voldown           # decrease volume
 	pavolume volset 50%        # set volume to 50%
 	pavolume volset 200%       # boost volume to 200%
 	pavolume muteon            # mute audio output
@@ -31,15 +31,23 @@ Make sure to edit the config file so that it points to a valid blip sound file (
 ## Using pavolume with awesome
 If you are using [awesome](http://awesome.naquadah.org/), you can use the following key bindings to control pavolume:
 
-	awful.key({                   }, "XF86AudioRaiseVolume", function() awful.util.spawn("pavolume volup") end),
-	awful.key({                   }, "XF86AudioLowerVolume", function() awful.util.spawn("pavolume voldown") end),
-	awful.key({         "Shift"   }, "XF86AudioRaiseVolume", function() awful.util.spawn("pavolume volup --nolimit") end),
-	awful.key({         "Shift"   }, "XF86AudioLowerVolume", function() awful.util.spawn("pavolume voldown") end),
-	awful.key({                   }, "XF86AudioMute", function() awful.util.spawn("pavolume mutetoggle") end),
+	awful.key({       }, "XF86AudioRaiseVolume", function() awful.util.spawn("pavolume volup") end),
+	awful.key({"Shift"}, "XF86AudioRaiseVolume", function() awful.util.spawn("pavolume volup --nolimit") end),
+	awful.key({       }, "XF86AudioLowerVolume", function() awful.util.spawn("pavolume voldown") end),
+	awful.key({       }, "XF86AudioMute", function() awful.util.spawn("pavolume mutetoggle") end),
 
 Pressing the volume up/down keys normally will increase/decrease volume, if you hold shift, you can increase the volume over 100%.
 
 If these bindings don't work for some reason, try calling the commands from the command line directly. If this works, then check whether the pavolume script is also visible from awesome's <code>$PATH</code>.
+
+## Using pavolume with qtile
+If you are using [qtile](http://www.qtile.org/), you can use the following key bindings to control pavolume:
+
+    Key([], "XF86AudioLowerVolume", lazy.spawn("PATH voldown")),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("PATH volup")),
+    Key([], "XF86AudioMute", lazy.spawn("PATH mutetoggle")),
+
+Where <code>PATH</code> is your full path to pavolume directory and pavolume program, e.g. /home/name/pavolume/pavolume.
 
 # Dependencies
 
