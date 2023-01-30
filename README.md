@@ -38,16 +38,19 @@ If you are using [awesome](http://awesome.naquadah.org/), you can use the follow
 
 Pressing the volume up/down keys normally will increase/decrease volume, if you hold shift, you can increase the volume over 100%.
 
-If these bindings don't work for some reason, try calling the commands from the command line directly. If this works, then check whether the pavolume script is also visible from awesome's <code>$PATH</code>.
+If these bindings don't work for some reason, try calling the commands from the command line directly. If this works, then check whether the pavolume script is also visible from awesome's <code>$PATH</code>. If its still not working, you can insert full path to your pavolume folder and pavolume file e.g. /home/user/.config/pavolume/pavolume. 
 
 ## Using pavolume with qtile
 If you are using [qtile](http://www.qtile.org/), you can use the following key bindings to control pavolume:
 
-    Key([], "XF86AudioLowerVolume", lazy.spawn("PATH voldown")),
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("PATH volup")),
-    Key([], "XF86AudioMute", lazy.spawn("PATH mutetoggle")),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pavolume volup")),
+    Key(["Shift"], "XF86AudioRaiseVolume", lazy.spawn("pavolume volup --nolimit")),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pavolume voldown")),
+    Key([], "XF86AudioMute", lazy.spawn("pavolume mutetoggle")),
 
-Where <code>PATH</code> is your full path to pavolume directory and pavolume program, e.g. /home/name/pavolume/pavolume.
+Pressing the volume up/down keys normally will increase/decrease volume, if you hold shift, you can increase the volume over 100%.
+
+If these bindings don't work for some reason, try calling the commands from the command line directly. If this works, then check whether the pavolume script is also visible from awesome's <code>$PATH</code>. If its still not working, you can insert full path to your pavolume folder and pavolume file e.g. /home/user/.config/pavolume/pavolume. 
 
 # Dependencies
 
