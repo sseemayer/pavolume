@@ -46,17 +46,21 @@ You can also point to a valid blip sound file (it uses the Ubuntu message sound 
 
 * If you are using [Awesome](http://awesome.naquadah.org/), you can use the following key bindings to control pavolume:
 
+```
 	awful.key({       }, "XF86AudioRaiseVolume", function() awful.util.spawn("pavolume volup") end),
 	awful.key({"Shift"}, "XF86AudioRaiseVolume", function() awful.util.spawn("pavolume volup --nolimit") end),
 	awful.key({       }, "XF86AudioLowerVolume", function() awful.util.spawn("pavolume voldown") end),
 	awful.key({       }, "XF86AudioMute", function() awful.util.spawn("pavolume mutetoggle") end),
+```
 
 * If you are using [Qtile](http://www.qtile.org/), you can use the following key bindings to control pavolume:
 
+```
     Key([       ], "XF86AudioRaiseVolume", lazy.spawn("pavolume volup")),
     Key(["Shift"], "XF86AudioRaiseVolume", lazy.spawn("pavolume volup --nolimit")),
     Key([       ], "XF86AudioLowerVolume", lazy.spawn("pavolume voldown")),
     Key([       ], "XF86AudioMute", lazy.spawn("pavolume mutetoggle")),
+```
 
 ## Troubleshooting
 
