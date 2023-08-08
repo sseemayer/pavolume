@@ -25,30 +25,36 @@ class PulseAudio(object):
 				self._volume[volume_match.group(1)] = int(volume_match.group(2),16)
 			elif mute_match:
 				self._mute[mute_match.group(1)] = mute_match.group(2).lower() == "yes"
-
+	
+	def get_default_sink(self, fallback):
+		defaults = subprocess.check_output(('pacmd', 'stat')).decode('UTF-8')
+		default_sink = re.search(r'.default sink name: (\S*)', defaults, re.I | re.S)
+		if default_sink is not None:
+			return default_sink.group(1)
+		return fallback
 
 	def get_mute(self, sink=None):
 		if not sink:
-			sink = list(self._mute.keys())[0]
+			sink = self.get_default_sink(list(self._mute.keys())[0])
 
 		return self._mute[sink]
 
 	def get_volume(self, sink=None):
 		if not sink:
-			sink = list(self._volume.keys())[0]
+			sink = self.get_default_sink(list(self._volume.keys())[0])
 
 		return self._volume[sink]
 
 	def set_mute(self, mute, sink=None):
 		if not sink:
-			sink = list(self._mute.keys())[0]
+			sink = self.get_default_sink(list(self._mute.keys())[0])
 
 		subprocess.Popen(['pacmd', 'set-sink-mute', sink, 'yes' if mute else 'no'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		self._mute[sink] = mute
 
 	def set_volume(self, volume, sink=None):
 		if not sink:
-			sink = list(self._volume.keys())[0]
+			sink = self.get_default_sink(list(self._volume.keys())[0])
 
 		subprocess.Popen(['pacmd', 'set-sink-volume', sink, hex(volume)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		self._volume[sink] = volume
