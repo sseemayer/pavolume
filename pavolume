@@ -27,6 +27,8 @@ Options:
 from pulseaudio import PulseAudio
 from docopt import docopt
 from configparser import ConfigParser
+import gi
+gi.require_version("Notify", "0.7")
 from gi.repository import Notify
 import os
 import math
